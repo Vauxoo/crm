@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -23,29 +23,29 @@
 from openerp import models, fields, api, _
 
 
-sales_order_states = [
+SALES_ORDER_STATES = [
     'progress', 'manual', 'shipping_exept', 'invoice_except', 'done']
 
-quotations_states = ['draft', 'sent', 'waiting_date']
+QUOTATIONS_STATES = ['draft', 'sent', 'waiting_date']
 
 
 class CrmLead(models.Model):
     _inherit = 'crm.lead'
 
-    def count_sales_order(self):
+    def _compute_count_sales_order(self):
         if not self.partner_id:
             return False
         self.sales_order_count = self.env['sale.order'].search_count([
             ('partner_id', '=', self.partner_id.id),
-            ('state', 'in', sales_order_states),
+            ('state', 'in', SALES_ORDER_STATES),
         ])
         self.quotations_count = self.env['sale.order'].search_count([
             ('partner_id', '=', self.partner_id.id),
-            ('state', 'in', quotations_states),
+            ('state', 'in', QUOTATIONS_STATES),
         ])
 
-    sales_order_count = fields.Integer(compute='count_sales_order')
-    quotations_count = fields.Integer(compute='count_sales_order')
+    sales_order_count = fields.Integer(compute='_compute_count_sales_order')
+    quotations_count = fields.Integer(compute='_compute_count_sales_order')
 
     @api.multi
     def get_sale_order_view(self, order_states, view_title):
@@ -77,8 +77,8 @@ class CrmLead(models.Model):
 
     @api.multi
     def button_sales_orders(self):
-        return self.get_sale_order_view(sales_order_states, _('Sales Order'))
+        return self.get_sale_order_view(SALES_ORDER_STATES, _('Sales Order'))
 
     @api.multi
     def button_quotations(self):
-        return self.get_sale_order_view(quotations_states, _('Quotations'))
+        return self.get_sale_order_view(QUOTATIONS_STATES, _('Quotations'))
