@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -25,7 +25,7 @@ from openerp.addons.email_template.email_template import mako_template_env,\
     format_tz
 
 
-class email_template(Model):
+class EmailTemplate(Model):
     _inherit = 'email.template'
 
     def render_template_batch(self, cr, uid, template, model, res_ids,
@@ -35,7 +35,7 @@ class email_template(Model):
             if model == 'newsletter.newsletter':
                 mako_template_env.autoescape = False
                 post_process = False
-            result = super(email_template, self).render_template_batch(
+            result = super(EmailTemplate, self).render_template_batch(
                 cr, uid, template, model, res_ids, context=context,
                 post_process=post_process)
         finally:
@@ -44,7 +44,7 @@ class email_template(Model):
 
         if model == 'newsletter.newsletter' and res_ids and result and\
                 context.get('newsletter_res_id'):
-            for res_id, rendered in result.iteritems():
+            for res_id, rendered in result.items():
                 newsletter = self.pool[model].browse(
                     cr, uid, res_id, context=context)
                 user = self.pool['res.users'].browse(

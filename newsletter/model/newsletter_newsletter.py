@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -21,11 +21,12 @@
 ##############################################################################
 import logging
 from openerp import api, models, fields, exceptions, _
+from openerp.addons.base.ir.ir_mail_server import MailDeliveryException
 from openerp.tools.safe_eval import safe_eval
 _logger = logging.getLogger(__name__)
 
 
-class newsletter_newsletter(models.Model):
+class NewsletterNewsletter(models.Model):
     _name = 'newsletter.newsletter'
     _description = 'Newsletter'
     _rec_name = 'subject'
@@ -60,7 +61,7 @@ class newsletter_newsletter(models.Model):
     @api.multi
     def action_preview(self):
         if self.state not in ['testing', 'sending', 'sent']:
-                self.write({'state': 'testing'})
+            self.write({'state': 'testing'})
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'email_template.preview',
@@ -92,8 +93,9 @@ class newsletter_newsletter(models.Model):
         })
         return {'type': 'ir.actions.act_window_close'}
 
-    @api.one
+    @api.multi
     def _cronjob_send_newsletter(self):
+        self.ensure_one()
         model = self.env[self.type_id.model.model]
 
         step = 100
@@ -111,14 +113,15 @@ class newsletter_newsletter(models.Model):
             for record in records:
                 try:
                     self._do_send_newsletter(record)
-                except Exception as e:
+                except MailDeliveryException as e:
                     _logger.error(e)
             offset += step
         _logger.info('sending newsletter %s finished', self.subject)
         self.write({'state': 'sent'})
 
-    @api.one
+    @api.multi
     def _do_send_newsletter(self, record, context=None):
+        self.ensure_one()
         _logger.debug('sending mail to %d', record)
         self.type_id.email_template_id\
             .with_context(
@@ -135,4 +138,4 @@ class newsletter_newsletter(models.Model):
             if this.state in ['sending', 'sent']:
                 raise exceptions.ValidationError(
                     _('You can\'t delete sent newsletters!'))
-        return super(newsletter_newsletter, self).unlink()
+        return super(NewsletterNewsletter, self).unlink()
