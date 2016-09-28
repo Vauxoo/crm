@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 ##############################################################################
 # For copyright and license notices, see __openerp__.py file in root directory
 ##############################################################################
@@ -35,11 +35,11 @@ class TestCrmLeadCode(common.TransactionCase):
         self.assertEqual(crm_lead_copy.code, code)
 
     def _get_next_code(self):
-        d = self.ir_sequence_model._interpolation_dict()
+        interpolation_dict = self.ir_sequence_model._interpolation_dict()
         prefix = self.ir_sequence_model._interpolate(
-            self.crm_sequence.prefix, d)
+            self.crm_sequence.prefix, interpolation_dict)
         suffix = self.ir_sequence_model._interpolate(
-            self.crm_sequence.suffix, d)
+            self.crm_sequence.suffix, interpolation_dict)
         code = (prefix + ('%%0%sd' % self.crm_sequence.padding %
                           self.crm_sequence.number_next_actual) + suffix)
         return code

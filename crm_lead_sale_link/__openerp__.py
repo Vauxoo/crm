@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -22,8 +22,8 @@
 
 {
     'name': 'CRM Lead Sale Link',
-    'version': '1.0',
-    'author': "Savoir-faire Linux,Odoo Community Association (OCA)",
+    'version': '8.0.1.0.0',
+    'author': "Savoir-faire Linux,Odoo Community Association (OCA), Vauxoo",
     'license': 'AGPL-3',
     'category': 'Others',
     'summary': 'CRM Lead Sale Link',

@@ -20,13 +20,11 @@
 #
 ############################################################################*/
 
-openerp.newsletter = function(instance)
-{
+openerp.newsletter = function(instance) {
     instance.web.form.widgets.add('text_email_html',
             'openerp.newsletter.FieldEmailHTML');
     openerp.newsletter.FieldEmailHTML = instance.web_ckeditor4.FieldCKEditor4.extend({
-        init: function()
-        {
+        init: function() {
             this.ckeditor_config.removePlugins+=',scayt,preview,a11yhelp,about,wsc';
             _.extend(this.ckeditor_config, {
                 disableNativeSpellChecker: false,
@@ -34,4 +32,4 @@ openerp.newsletter = function(instance)
             return this._super.apply(this, arguments);
         }
     });
-}
+};

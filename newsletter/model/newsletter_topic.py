@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -22,7 +22,7 @@
 from openerp import models, fields
 
 
-class newsletter_topic(models.Model):
+class NewsletterTopic(models.Model):
     _name = 'newsletter.topic'
     _description = 'Newsletter topic'
     _rec_name = 'title'
